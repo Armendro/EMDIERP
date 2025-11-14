@@ -1,0 +1,56 @@
+from pydantic import BaseModel, Field
+from typing import List, Optional
+from datetime import datetime
+from enum import Enum
+
+class OrderStatus(str, Enum):
+    draft = "draft"
+    pending_approval = "pending_approval"
+    approved = "approved"
+    invoiced = "invoiced"
+    completed = "completed"
+    cancelled = "cancelled"
+
+class OrderItem(BaseModel):
+    product_id: str
+    product_name: str
+    quantity: int = Field(gt=0)
+    price: float = Field(ge=0)
+
+class OrderBase(BaseModel):
+    customer_id: str
+    customer_name: str
+    items: List[OrderItem]
+    status: OrderStatus = OrderStatus.draft
+
+class OrderCreate(OrderBase):
+    pass
+
+class OrderUpdate(BaseModel):
+    customer_id: Optional[str] = None
+    customer_name: Optional[str] = None
+    items: Optional[List[OrderItem]] = None
+    status: Optional[OrderStatus] = None
+
+class OrderInDB(OrderBase):
+    id: str = Field(alias="_id")
+    order_number: str
+    date: datetime
+    total: float
+    approved_by: Optional[str] = None
+    created_by: str
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        populate_by_name = True
+
+class OrderResponse(OrderBase):
+    id: str
+    order_number: str
+    date: datetime
+    total: float
+    approved_by: Optional[str] = None
+    created_by: str
+    created_at: datetime
+    updated_at: datetime
