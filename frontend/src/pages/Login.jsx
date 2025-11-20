@@ -84,11 +84,11 @@ const Login = () => {
           </form>
 
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-600 font-semibold mb-2">Demo Credentials:</p>
+            <p className="text-xs text-gray-600 font-semibold mb-2">Credenciais de Demonstração:</p>
             <div className="text-xs text-gray-600 space-y-1">
               <p><strong>Admin:</strong> admin@erp.com / password123</p>
-              <p><strong>Manager:</strong> sarah@erp.com / password123</p>
-              <p><strong>Employee:</strong> john@erp.com / password123</p>
+              <p><strong>Gerente:</strong> sarah@erp.com / password123</p>
+              <p><strong>Funcionário:</strong> john@erp.com / password123</p>
             </div>
           </div>
         </CardContent>
