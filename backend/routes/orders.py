@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-from motor.motor_asyncio import AsyncIOMotorClient
+
 from datetime import datetime
-import os
 from bson import ObjectId
 
 from models.order import OrderCreate, OrderUpdate, OrderResponse, OrderStatus
@@ -11,8 +10,7 @@ from auth.dependencies import get_current_user, require_roles
 router = APIRouter(prefix="/orders", tags=["Sales"])
 
 # Get database
-client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-db = client[os.environ['DB_NAME']]
+from database import db
 
 async def generate_order_number():
     """Generate next order number"""

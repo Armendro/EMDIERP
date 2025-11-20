@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-from motor.motor_asyncio import AsyncIOMotorClient
+
 from datetime import datetime
-import os
 from bson import ObjectId
 
 from models.account import AccountCreate, AccountUpdate, AccountResponse
@@ -12,8 +11,7 @@ from auth.dependencies import get_current_user, require_roles
 router = APIRouter(prefix="/accounts", tags=["Accounting"])
 
 # Get database
-client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-db = client[os.environ['DB_NAME']]
+from database import db
 
 @router.get("", response_model=List[AccountResponse])
 async def get_accounts(current_user: dict = Depends(require_roles(["admin", "manager"]))):

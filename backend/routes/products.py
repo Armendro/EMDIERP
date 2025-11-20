@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-from motor.motor_asyncio import AsyncIOMotorClient
+
 from datetime import datetime
-import os
 from bson import ObjectId
 
 from models.product import ProductCreate, ProductUpdate, ProductResponse
@@ -11,8 +10,7 @@ from auth.dependencies import get_current_user, require_roles
 router = APIRouter(prefix="/products", tags=["Inventory"])
 
 # Get database
-client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-db = client[os.environ['DB_NAME']]
+from database import db
 
 @router.get("", response_model=List[ProductResponse])
 async def get_products(current_user: dict = Depends(get_current_user)):

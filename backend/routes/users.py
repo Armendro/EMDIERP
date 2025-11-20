@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-from motor.motor_asyncio import AsyncIOMotorClient
+
 from datetime import datetime
-import os
 
 from models.user import UserCreate, UserUpdate, UserResponse
 from auth.password import hash_password
@@ -11,8 +10,7 @@ from auth.dependencies import get_current_user, require_roles
 router = APIRouter(prefix="/users", tags=["Users"])
 
 # Get database
-client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-db = client[os.environ['DB_NAME']]
+from database import db
 
 @router.get("", response_model=List[UserResponse])
 async def get_users(current_user: dict = Depends(require_roles(["admin", "manager"]))):

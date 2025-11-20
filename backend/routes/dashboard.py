@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
+
 
 from auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 # Get database
-client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-db = client[os.environ['DB_NAME']]
+from database import db
 
 @router.get("/stats")
 async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):

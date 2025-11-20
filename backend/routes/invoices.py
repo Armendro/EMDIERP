@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-from motor.motor_asyncio import AsyncIOMotorClient
+
 from datetime import datetime, timedelta
-import os
 from bson import ObjectId
 
 from models.invoice import InvoiceCreate, InvoiceUpdate, InvoiceResponse
@@ -11,8 +10,7 @@ from auth.dependencies import get_current_user, require_roles
 router = APIRouter(prefix="/invoices", tags=["Sales"])
 
 # Get database
-client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-db = client[os.environ['DB_NAME']]
+from database import db
 
 async def generate_invoice_number():
     """Generate next invoice number"""
