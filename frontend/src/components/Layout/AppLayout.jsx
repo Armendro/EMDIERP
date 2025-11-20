@@ -13,12 +13,12 @@ const AppLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const navItems = [
-    { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+    { id: 'dashboard', icon: LayoutDashboard, label: 'Painel', path: '/dashboard' },
     { id: 'crm', icon: Users, label: 'CRM', path: '/crm' },
-    { id: 'sales', icon: ShoppingCart, label: 'Sales', path: '/sales' },
-    { id: 'inventory', icon: Package, label: 'Inventory', path: '/inventory' },
-    { id: 'accounting', icon: DollarSign, label: 'Accounting', path: '/accounting' },
-    { id: 'settings', icon: Settings, label: 'Settings', path: '/settings' }
+    { id: 'sales', icon: ShoppingCart, label: 'Vendas', path: '/sales' },
+    { id: 'inventory', icon: Package, label: 'Estoque', path: '/inventory' },
+    { id: 'accounting', icon: DollarSign, label: 'Financeiro', path: '/accounting' },
+    { id: 'settings', icon: Settings, label: 'Configurações', path: '/settings' }
   ];
 
   const handleLogout = () => {
