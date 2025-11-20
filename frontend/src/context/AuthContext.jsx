@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { mockUsers } from '../mockData';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -19,21 +19,29 @@ export const AuthProvider = ({ children }) => {
     // Check for stored user on mount
     const storedUser = localStorage.getItem('erpUser');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const userData = JSON.parse(storedUser);
+      setUser(userData);
     }
     setLoading(false);
   }, []);
 
-  const login = (email, password) => {
-    // Mock login - find user by email
-    const foundUser = mockUsers.find(u => u.email === email);
-    if (foundUser && password === 'password123') {
-      const userData = { ...foundUser, token: 'mock-jwt-token-' + foundUser.id };
-      setUser(userData);
-      localStorage.setItem('erpUser', JSON.stringify(userData));
-      return { success: true, user: userData };
+  const login = async (email, password) => {
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      const { token, user: userData } = response.data;
+      
+      const fullUserData = { ...userData, token };
+      setUser(fullUserData);
+      localStorage.setItem('erpUser', JSON.stringify(fullUserData));
+      
+      return { success: true, user: fullUserData };
+    } catch (error) {
+      console.error('Login error:', error);
+      return { 
+        success: false, 
+        error: error.response?.data?.detail || 'Credenciais inválidas' 
+      };
     }
-    return { success: false, error: 'Invalid credentials' };
   };
 
   const logout = () => {
