@@ -2,8 +2,6 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import List
 from .jwt import decode_token
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
 
 security = HTTPBearer()
 
@@ -11,6 +9,8 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     """
     Dependency to get current authenticated user from JWT token
     """
+    from database import db
+    
     token = credentials.credentials
     payload = decode_token(token)
     
@@ -22,10 +22,6 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         )
     
     # Get user from database
-    from motor.motor_asyncio import AsyncIOMotorClient
-    client = AsyncIOMotorClient(os.environ['MONGO_URL'])
-    db = client[os.environ['DB_NAME']]
-    
     user = await db.users.find_one({"_id": user_id})
     if not user:
         raise HTTPException(
