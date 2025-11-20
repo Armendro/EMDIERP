@@ -34,8 +34,8 @@ const Login = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
             <span className="text-2xl font-bold text-white">E</span>
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-          <CardDescription>Sign in to your ERP account</CardDescription>
+          <CardTitle className="text-2xl font-bold">Bem-vindo de Volta</CardTitle>
+          <CardDescription>Entre na sua conta ERP</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
