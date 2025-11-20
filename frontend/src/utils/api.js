@@ -1,0 +1,43 @@
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_BACKEND_URL + '/api';
+
+// Criar instância do axios com configuração base
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor para adicionar token JWT nas requisições
+api.interceptors.request.use(
+  (config) => {
+    const userData = localStorage.getItem('erpUser');
+    if (userData) {
+      const user = JSON.parse(userData);
+      if (user.token) {
+        config.headers.Authorization = `Bearer ${user.token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Interceptor para tratar erros de resposta
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token inválido ou expirado
+      localStorage.removeItem('erpUser');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
