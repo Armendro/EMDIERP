@@ -15,12 +15,12 @@ export const mockLeads = [
 ];
 
 export const crmStages = [
-  { id: 'new', name: 'New', color: '#64748b' },
-  { id: 'qualified', name: 'Qualified', color: '#3b82f6' },
-  { id: 'proposition', name: 'Proposition', color: '#8b5cf6' },
-  { id: 'negotiation', name: 'Negotiation', color: '#f59e0b' },
-  { id: 'won', name: 'Won', color: '#10b981' },
-  { id: 'lost', name: 'Lost', color: '#ef4444' }
+  { id: 'new', name: 'Novo', color: '#64748b' },
+  { id: 'qualified', name: 'Qualificado', color: '#3b82f6' },
+  { id: 'proposition', name: 'Proposta', color: '#8b5cf6' },
+  { id: 'negotiation', name: 'Negociação', color: '#f59e0b' },
+  { id: 'won', name: 'Ganho', color: '#10b981' },
+  { id: 'lost', name: 'Perdido', color: '#ef4444' }
 ];
 
 export const mockProducts = [
