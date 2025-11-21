@@ -7,15 +7,29 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Textarea } from '../components/ui/textarea';
-import { mockLeads, crmStages, mockUsers } from '../mockData';
-import { Plus, Search, Filter, Phone, Mail, DollarSign, User, Calendar } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { useLeads } from '../hooks/useLeads';
+import { crmStages } from '../mockData';
+import { Plus, Search, DollarSign } from 'lucide-react';
+import { translate } from '../utils/translations';
 
 const CRM = () => {
-  const [leads, setLeads] = useState(mockLeads);
+  const { leads, loading, createLead, updateLead } = useLeads();
   const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState('kanban'); // 'kanban' or 'list'
+  const [viewMode, setViewMode] = useState('kanban');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    contact: '',
+    email: '',
+    phone: '',
+    expected_revenue: '',
+    priority: 'medium',
+    probability: 20,
+    notes: ''
+  });
 
   const filteredLeads = leads.filter(lead =>
     lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -35,71 +49,138 @@ const CRM = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await createLead({
+      ...formData,
+      expected_revenue: parseFloat(formData.expected_revenue),
+      probability: parseInt(formData.probability)
+    });
+    
+    if (success) {
+      setIsDialogOpen(false);
+      setFormData({
+        name: '',
+        contact: '',
+        email: '',
+        phone: '',
+        expected_revenue: '',
+        priority: 'medium',
+        probability: 20,
+        notes: ''
+      });
+    }
+  };
+
+  const handleStageChange = async (leadId, newStage) => {
+    await updateLead(leadId, { stage: newStage });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">CRM - Leads & Opportunities</h1>
-          <p className="text-gray-600 mt-1">Manage your sales pipeline</p>
+          <h1 className="text-2xl font-bold text-gray-900">CRM - Leads e Oportunidades</h1>
+          <p className="text-gray-600 mt-1">Gerencie seu pipeline de vendas</p>
         </div>
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
               <Plus className="h-4 w-4 mr-2" />
-              New Lead
+              Novo Lead
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Create New Lead</DialogTitle>
+              <DialogTitle>Criar Novo Lead</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4 py-4">
+            <form onSubmit={handleSubmit} className="space-y-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Company Name</Label>
-                  <Input placeholder="Enter company name" />
+                  <Label>Nome da Empresa *</Label>
+                  <Input 
+                    placeholder="Digite o nome da empresa" 
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label>Contact Person</Label>
-                  <Input placeholder="Enter contact name" />
+                  <Label>Pessoa de Contato *</Label>
+                  <Input 
+                    placeholder="Digite o nome do contato" 
+                    value={formData.contact}
+                    onChange={(e) => setFormData({...formData, contact: e.target.value})}
+                    required
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input type="email" placeholder="email@company.com" />
+                  <Label>Email *</Label>
+                  <Input 
+                    type="email" 
+                    placeholder="email@empresa.com" 
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label>Phone</Label>
-                  <Input placeholder="+1234567890" />
+                  <Label>Telefone *</Label>
+                  <Input 
+                    placeholder="+55 11 99999-9999" 
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    required
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Expected Revenue</Label>
-                  <Input type="number" placeholder="50000" />
+                  <Label>Receita Esperada (R$) *</Label>
+                  <Input 
+                    type="number" 
+                    placeholder="50000" 
+                    value={formData.expected_revenue}
+                    onChange={(e) => setFormData({...formData, expected_revenue: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label>Priority</Label>
-                  <Select>
+                  <Label>Prioridade</Label>
+                  <Select value={formData.priority} onValueChange={(value) => setFormData({...formData, priority: value})}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select priority" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="high">Alta</SelectItem>
+                      <SelectItem value="medium">Média</SelectItem>
+                      <SelectItem value="low">Baixa</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Notes</Label>
-                <Textarea placeholder="Add any additional information..." rows={4} />
+                <Label>Notas</Label>
+                <Textarea 
+                  placeholder="Adicione informações adicionais..." 
+                  rows={4}
+                  value={formData.notes}
+                  onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                />
               </div>
-              <Button className="w-full">Create Lead</Button>
-            </div>
+              <Button type="submit" className="w-full">Criar Lead</Button>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
@@ -111,7 +192,7 @@ const CRM = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Search leads..."
+                placeholder="Buscar leads..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -122,7 +203,7 @@ const CRM = () => {
                 Kanban
               </Button>
               <Button variant={viewMode === 'list' ? 'default' : 'outline'} onClick={() => setViewMode('list')}>
-                List
+                Lista
               </Button>
             </div>
           </div>
@@ -142,75 +223,22 @@ const CRM = () => {
                 </div>
                 <div className="space-y-3">
                   {stageLeads.map((lead) => (
-                    <Dialog key={lead.id}>
-                      <DialogTrigger asChild>
-                        <Card className="cursor-pointer hover:shadow-md transition-all duration-200" onClick={() => setSelectedLead(lead)}>
-                          <CardContent className="p-4">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <h4 className="font-semibold text-sm">{lead.name}</h4>
-                                <Badge className={getPriorityColor(lead.priority)}>{lead.priority}</Badge>
-                              </div>
-                              <p className="text-xs text-gray-600">{lead.contact}</p>
-                              <div className="flex items-center text-xs text-gray-500">
-                                <DollarSign className="h-3 w-3 mr-1" />
-                                ${lead.expectedRevenue.toLocaleString()}
-                              </div>
-                              <div className="text-xs text-gray-500">{lead.probability}% probability</div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-2xl">
-                        <DialogHeader>
-                          <DialogTitle>{lead.name}</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4 py-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <Label className="text-gray-600">Contact Person</Label>
-                              <p className="font-medium">{lead.contact}</p>
-                            </div>
-                            <div>
-                              <Label className="text-gray-600">Stage</Label>
-                              <Badge style={{ backgroundColor: stage.color }} className="text-white">{stage.name}</Badge>
-                            </div>
+                    <Card key={lead.id} className="cursor-pointer hover:shadow-md transition-all duration-200">
+                      <CardContent className="p-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold text-sm">{lead.name}</h4>
+                            <Badge className={getPriorityColor(lead.priority)}>{translate('priority', lead.priority)}</Badge>
                           </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <Label className="text-gray-600">Email</Label>
-                              <p className="font-medium">{lead.email}</p>
-                            </div>
-                            <div>
-                              <Label className="text-gray-600">Phone</Label>
-                              <p className="font-medium">{lead.phone}</p>
-                            </div>
+                          <p className="text-xs text-gray-600">{lead.contact}</p>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <DollarSign className="h-3 w-3 mr-1" />
+                            R$ {lead.expected_revenue.toLocaleString('pt-BR')}
                           </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <Label className="text-gray-600">Expected Revenue</Label>
-                              <p className="font-medium text-green-600">${lead.expectedRevenue.toLocaleString()}</p>
-                            </div>
-                            <div>
-                              <Label className="text-gray-600">Probability</Label>
-                              <p className="font-medium">{lead.probability}%</p>
-                            </div>
-                          </div>
-                          <div>
-                            <Label className="text-gray-600">Priority</Label>
-                            <Badge className={getPriorityColor(lead.priority)}>{lead.priority}</Badge>
-                          </div>
-                          <div>
-                            <Label className="text-gray-600">Notes</Label>
-                            <p className="text-sm">{lead.notes}</p>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button className="flex-1">Convert to Sale</Button>
-                            <Button variant="outline" className="flex-1">Edit Lead</Button>
-                          </div>
+                          <div className="text-xs text-gray-500">{lead.probability}% probabilidade</div>
                         </div>
-                      </DialogContent>
-                    </Dialog>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </div>
@@ -227,19 +255,19 @@ const CRM = () => {
               <table className="w-full">
                 <thead className="bg-gray-50 border-b">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stage</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenue</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Probability</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Empresa</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contato</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estágio</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Receita</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prioridade</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Probabilidade</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {filteredLeads.map((lead) => {
                     const stage = crmStages.find(s => s.id === lead.stage);
                     return (
-                      <tr key={lead.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedLead(lead)}>
+                      <tr key={lead.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4">
                           <div className="font-medium text-gray-900">{lead.name}</div>
                           <div className="text-sm text-gray-500">{lead.email}</div>
@@ -252,10 +280,10 @@ const CRM = () => {
                           <Badge style={{ backgroundColor: stage?.color }} className="text-white">{stage?.name}</Badge>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-sm font-medium text-gray-900">${lead.expectedRevenue.toLocaleString()}</div>
+                          <div className="text-sm font-medium text-gray-900">R$ {lead.expected_revenue.toLocaleString('pt-BR')}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <Badge className={getPriorityColor(lead.priority)}>{lead.priority}</Badge>
+                          <Badge className={getPriorityColor(lead.priority)}>{translate('priority', lead.priority)}</Badge>
                         </td>
                         <td className="px-6 py-4">
                           <div className="text-sm text-gray-900">{lead.probability}%</div>
