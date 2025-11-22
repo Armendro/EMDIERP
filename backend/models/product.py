@@ -29,6 +29,7 @@ class ProductBase(BaseModel):
     sub_family: Optional[str] = None  # Subfamília
     description: Optional[str] = None
     supplier: Optional[str] = None
+    default_supplier_id: Optional[str] = None  # Referência ao Contact (fornecedor)
     status: str = "active"  # "active" ou "inactive"
     
     # Campos legados (para compatibilidade com produtos sem variantes)
