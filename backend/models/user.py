@@ -26,6 +26,9 @@ class UserUpdate(BaseModel):
     phone: Optional[str] = None
     department: Optional[str] = None
     role: Optional[UserRole] = None
+    store_id: Optional[str] = None
+    is_active: Optional[bool] = None
+    password: Optional[str] = None
 
 class UserInDB(UserBase):
     id: str = Field(alias="_id")
