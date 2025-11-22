@@ -20,6 +20,7 @@ const Sales = () => {
   const { orders, loading, approveOrder, rejectOrder, createOrder } = useOrders();
   const { invoices } = useInvoices();
   const { products } = useProducts();
+  const { contacts: customers } = useContacts(true, null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
