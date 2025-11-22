@@ -41,6 +41,8 @@ api_router.include_router(dashboard.router)
 api_router.include_router(contacts.router)
 api_router.include_router(stores.router)
 api_router.include_router(cost_centers.router)
+api_router.include_router(system_settings.router)
+api_router.include_router(warehouses.router)
 
 # Include the router in the main app
 app.include_router(api_router)
