@@ -17,7 +17,8 @@ class LoginRequest(BaseModel):
     password: str
 
 class LoginResponse(BaseModel):
-    token: str
+    access_token: str
+    token_type: str
     user: dict
 
 class RegisterRequest(BaseModel):
