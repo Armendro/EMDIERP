@@ -196,8 +196,11 @@ async def approve_order(
     # Calcular comissão total do pedido
     total_commission = 0
     for item in order["items"]:
-        # Se o item tem percentual de comissão definido, usar
-        if item.get("commission_percent") is not None:
+        # Se o item já tem o valor de comissão calculado, usar
+        if item.get("commission_value") is not None:
+            total_commission += item["commission_value"]
+        # Senão, calcular com base na percentagem
+        elif item.get("commission_percent") is not None:
             item_commission = item["quantity"] * item["price"] * (item["commission_percent"] / 100)
             total_commission += item_commission
     
