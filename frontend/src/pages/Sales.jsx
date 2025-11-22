@@ -198,6 +198,8 @@ const Sales = () => {
     const orderData = {
       customer_id: orderForm.customer_id || 'CUST-' + Date.now(),
       customer_name: orderForm.customer_name,
+      store_id: orderForm.store_id,
+      cost_center_id: orderForm.cost_center_id,
       items: orderItems,
       status: orderForm.status
     };
