@@ -309,7 +309,7 @@ const Settings = () => {
                                   {u.is_active ? 'Ativo' : 'Inativo'}
                                 </Badge>
                               </td>
-                              {user?.role === 'admin' && (
+                              {(user?.role === 'admin' || user?.role === 'manager') && (
                                 <td className="px-4 py-3">
                                   <div className="flex gap-2">
                                     <Button
@@ -322,7 +322,7 @@ const Settings = () => {
                                     >
                                       <Edit className="h-4 w-4" />
                                     </Button>
-                                    {u.is_active && u.id !== currentUser?.id && (
+                                    {user?.role === 'admin' && u.is_active && u.id !== currentUser?.id && (
                                       <Button
                                         variant="destructive"
                                         size="sm"
