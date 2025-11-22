@@ -52,6 +52,7 @@ class ProductUpdate(BaseModel):
     sub_family: Optional[str] = None
     description: Optional[str] = None
     supplier: Optional[str] = None
+    default_supplier_id: Optional[str] = None
     status: Optional[str] = None
     price: Optional[float] = Field(None, ge=0)
     cost: Optional[float] = Field(None, ge=0)
