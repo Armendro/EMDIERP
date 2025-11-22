@@ -240,19 +240,23 @@ async def approve_order(
         str(current_user["_id"])
     )
     
-    # Update order status
+    # Update order status and save commission
     await db.orders.update_one(
         {"_id": ObjectId(order_id)},
         {
             "$set": {
                 "status": "approved",
                 "approved_by": str(current_user["_id"]),
+                "total_commission": total_commission,
                 "updated_at": datetime.utcnow()
             }
         }
     )
     
-    return {"message": "Order approved successfully"}
+    return {
+        "message": "Order approved successfully",
+        "total_commission": total_commission
+    }
 
 @router.put("/{order_id}/reject")
 async def reject_order(
