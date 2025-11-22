@@ -253,7 +253,7 @@ const Sales = () => {
             <form onSubmit={handleCreateOrder} className="space-y-6 py-4">
               {/* Informações do Cliente */}
               <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Informações do Cliente</h3>
+                <h3 className="font-semibold text-lg">Informações do Pedido</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Selecionar Cliente *</Label>
@@ -275,6 +275,44 @@ const Sales = () => {
                         {customers.map((customer) => (
                           <SelectItem key={customer.id} value={customer.id}>
                             {customer.name} - {customer.nif}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Loja *</Label>
+                    <Select 
+                      value={orderForm.store_id} 
+                      onValueChange={(value) => setOrderForm({...orderForm, store_id: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Escolha uma loja" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {stores.map((store) => (
+                          <SelectItem key={store.id} value={store.id}>
+                            {store.code} - {store.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Centro de Custo (Receita) *</Label>
+                    <Select 
+                      value={orderForm.cost_center_id} 
+                      onValueChange={(value) => setOrderForm({...orderForm, cost_center_id: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Escolha um centro de custo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {costCenters.map((cc) => (
+                          <SelectItem key={cc.id} value={cc.id}>
+                            {cc.code} - {cc.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
