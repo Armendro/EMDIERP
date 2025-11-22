@@ -38,6 +38,8 @@ class OrderUpdate(BaseModel):
     customer_name: Optional[str] = None
     items: Optional[List[OrderItem]] = None
     status: Optional[OrderStatus] = None
+    store_id: Optional[str] = None
+    cost_center_id: Optional[str] = None
 
 class OrderInDB(OrderBase):
     id: str = Field(alias="_id")
