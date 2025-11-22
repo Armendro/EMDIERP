@@ -50,6 +50,7 @@ async def get_store(store_id: str, current_user: dict = Depends(get_current_user
         "postal_code": store["postal_code"],
         "city": store["city"],
         "country": store["country"],
+        "revenue_cost_center_id": store.get("revenue_cost_center_id"),
         "status": store["status"],
         "created_at": store["created_at"],
         "updated_at": store["updated_at"]
