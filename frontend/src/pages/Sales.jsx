@@ -34,6 +34,8 @@ const Sales = () => {
   const [orderForm, setOrderForm] = useState({
     customer_id: '',
     customer_name: '',
+    store_id: '',
+    cost_center_id: '',
     status: 'draft'
   });
 
