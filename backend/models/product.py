@@ -32,10 +32,10 @@ class ProductBase(BaseModel):
     status: str = "active"  # "active" ou "inactive"
     
     # Campos legados (para compatibilidade com produtos sem variantes)
-    price: Optional[float] = Field(None, ge=0)
-    cost: Optional[float] = Field(None, ge=0)
-    stock: Optional[int] = Field(None, ge=0)
-    reorder_level: Optional[int] = Field(None, ge=0, default=10)
+    price: Optional[float] = Field(default=None, ge=0)
+    cost: Optional[float] = Field(default=None, ge=0)
+    stock: Optional[int] = Field(default=None, ge=0)
+    reorder_level: Optional[int] = Field(default=10, ge=0)
     
     # Variantes do produto
     variants: List[ProductVariant] = []
