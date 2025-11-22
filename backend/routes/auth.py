@@ -58,7 +58,8 @@ async def login(credentials: LoginRequest):
     
     # Return response
     return {
-        "token": token,
+        "access_token": token,
+        "token_type": "bearer",
         "user": {
             "id": str(user["_id"]),
             "name": user["name"],
