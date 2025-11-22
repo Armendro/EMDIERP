@@ -241,7 +241,7 @@ const Settings = () => {
                   <UsersIcon className="h-5 w-5" />
                   Gestão de Utilizadores
                 </CardTitle>
-                {user?.role === 'admin' || user?.role === 'manager' && (
+                {(user?.role === 'admin' || user?.role === 'manager') && (
                   <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
                     <DialogTrigger asChild>
                       <Button onClick={() => setEditingUser(null)}>
