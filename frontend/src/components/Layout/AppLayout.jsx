@@ -17,6 +17,8 @@ const AppLayout = () => {
     { id: 'crm', icon: Users, label: 'CRM', path: '/crm' },
     { id: 'sales', icon: ShoppingCart, label: 'Vendas', path: '/sales' },
     { id: 'inventory', icon: Package, label: 'Estoque', path: '/inventory' },
+    { id: 'customers', icon: Users, label: 'Clientes', path: '/customers' },
+    { id: 'suppliers', icon: Package, label: 'Fornecedores', path: '/suppliers' },
     { id: 'accounting', icon: DollarSign, label: 'Financeiro', path: '/accounting' },
     { id: 'settings', icon: Settings, label: 'Configurações', path: '/settings' }
   ];
