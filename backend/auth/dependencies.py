@@ -22,14 +22,14 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
             detail="Invalid authentication credentials"
         )
     
-    # Get user from database
+    # Get user from database - try both ObjectId and string formats
+    user = None
     try:
+        # Try ObjectId first
         user = await db.users.find_one({"_id": ObjectId(user_id)})
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid user ID format"
-        )
+    except:
+        # If ObjectId fails, try direct string match (for seed data)
+        user = await db.users.find_one({"_id": user_id})
     
     if not user:
         raise HTTPException(
