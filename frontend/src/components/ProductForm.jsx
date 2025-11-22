@@ -186,12 +186,22 @@ const ProductForm = ({ onSubmit, onCancel }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Fornecedor</Label>
-              <Input
-                placeholder="Ex: Fornecedor XYZ"
-                value={productData.supplier}
-                onChange={(e) => setProductData({ ...productData, supplier: e.target.value })}
-              />
+              <Label>Fornecedor Padrão</Label>
+              <Select 
+                value={productData.default_supplier_id} 
+                onValueChange={(value) => setProductData({ ...productData, default_supplier_id: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione um fornecedor" />
+                </SelectTrigger>
+                <SelectContent>
+                  {suppliers.map((supplier) => (
+                    <SelectItem key={supplier.id} value={supplier.id}>
+                      {supplier.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>Status</Label>
