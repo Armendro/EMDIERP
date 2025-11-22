@@ -77,6 +77,13 @@ async def create_product(
         )
     
     product_dict = product_data.dict()
+    
+    # Gerar IDs para variantes se não tiverem
+    if product_dict.get("variants"):
+        for i, variant in enumerate(product_dict["variants"]):
+            if not variant.get("variant_id"):
+                variant["variant_id"] = f"VAR-{i+1:03d}-{datetime.utcnow().timestamp()}"
+    
     product_dict["created_at"] = datetime.utcnow()
     product_dict["updated_at"] = datetime.utcnow()
     
