@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
-
+from bson import ObjectId
 from datetime import datetime
 
 from models.user import UserCreate, UserUpdate, UserResponse
@@ -11,6 +11,25 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 # Get database
 from database import db
+
+@router.get("/me", response_model=UserResponse)
+async def get_current_user_info(current_user: dict = Depends(get_current_user)):
+    """
+    Get current authenticated user information
+    """
+    return {
+        "id": str(current_user["_id"]),
+        "name": current_user["name"],
+        "email": current_user["email"],
+        "role": current_user["role"],
+        "avatar": current_user.get("avatar", ""),
+        "phone": current_user.get("phone"),
+        "department": current_user.get("department"),
+        "store_id": current_user.get("store_id"),
+        "is_active": current_user.get("is_active", True),
+        "created_at": current_user["created_at"],
+        "updated_at": current_user["updated_at"]
+    }
 
 @router.get("", response_model=List[UserResponse])
 async def get_users(current_user: dict = Depends(require_roles(["admin", "manager"]))):
