@@ -42,21 +42,99 @@ This document outlines the API contracts, data models, and integration plan for 
 }
 ```
 
-### 1.3 Products (Inventory)
+### 1.3 Products (Inventory) - COM VARIANTES
 ```python
 {
   "_id": ObjectId,
   "name": String,
   "sku": String (unique, indexed),
   "category": String,
+  "family": String,  # Família do produto
+  "sub_family": String,  # Subfamília
   "description": String,
-  "price": Float,
-  "cost": Float,
-  "stock": Int,
-  "reorder_level": Int,
   "supplier": String,
+  "status": Enum["active", "inactive"],
+  
+  # Campos legados (para compatibilidade com produtos sem variantes)
+  "price": Float (optional),
+  "cost": Float (optional),
+  "stock": Int (optional),
+  "reorder_level": Int (optional),
+  
+  # VARIANTES DO PRODUTO
+  "variants": [
+    {
+      "variant_id": String,  # Gerado automaticamente
+      "name": String (optional),  # Ex: "140x190 - Bege"
+      "attributes": [
+        {"name": "Tamanho", "value": "140x190"},
+        {"name": "Cor", "value": "Bege"}
+      ],
+      "price_tiers": [  # FAIXAS DE PREÇO POR VARIANTE
+        {
+          "name": "normal",  # Nome da faixa
+          "price": 1500.00,  # Preço
+          "commission_percent": 5.0  # Percentual de comissão
+        },
+        {
+          "name": "site",
+          "price": 1450.00,
+          "commission_percent": 4.0
+        },
+        {
+          "name": "promo",
+          "price": 1300.00,
+          "commission_percent": 2.0
+        }
+      ],
+      "stock": Int  # Estoque específico da variante
+    }
+  ],
   "created_at": DateTime,
   "updated_at": DateTime
+}
+```
+
+**Exemplo de Produto com 2 Variantes:**
+```json
+{
+  "name": "Colchão Premium",
+  "sku": "COL-PREM-001",
+  "category": "Móveis",
+  "family": "Colchões",
+  "sub_family": "Espuma",
+  "supplier": "Fornecedor XYZ",
+  "status": "active",
+  "variants": [
+    {
+      "variant_id": "VAR-001-1234567890",
+      "name": "140x190 - Bege",
+      "attributes": [
+        {"name": "Tamanho", "value": "140x190"},
+        {"name": "Cor", "value": "Bege"}
+      ],
+      "price_tiers": [
+        {"name": "normal", "price": 1500.00, "commission_percent": 5.0},
+        {"name": "site", "price": 1450.00, "commission_percent": 4.0},
+        {"name": "promo", "price": 1300.00, "commission_percent": 2.0}
+      ],
+      "stock": 20
+    },
+    {
+      "variant_id": "VAR-002-1234567891",
+      "name": "160x200 - Branco",
+      "attributes": [
+        {"name": "Tamanho", "value": "160x200"},
+        {"name": "Cor", "value": "Branco"}
+      ],
+      "price_tiers": [
+        {"name": "normal", "price": 1800.00, "commission_percent": 6.0},
+        {"name": "site", "price": 1750.00, "commission_percent": 5.0},
+        {"name": "promo", "price": 1600.00, "commission_percent": 3.0}
+      ],
+      "stock": 15
+    }
+  ]
 }
 ```
 
