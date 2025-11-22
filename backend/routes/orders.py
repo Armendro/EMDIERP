@@ -109,6 +109,7 @@ async def get_order(order_id: str, current_user: dict = Depends(get_current_user
         "status": order["status"],
         "items": order["items"],
         "total": order["total"],
+        "total_commission": order.get("total_commission", 0),
         "approved_by": order.get("approved_by"),
         "created_by": order["created_by"],
         "created_at": order["created_at"],
