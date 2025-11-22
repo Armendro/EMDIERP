@@ -27,6 +27,8 @@ async def get_users(current_user: dict = Depends(require_roles(["admin", "manage
             "avatar": user.get("avatar", ""),
             "phone": user.get("phone"),
             "department": user.get("department"),
+            "store_id": user.get("store_id"),
+            "is_active": user.get("is_active", True),
             "created_at": user["created_at"],
             "updated_at": user["updated_at"]
         }
