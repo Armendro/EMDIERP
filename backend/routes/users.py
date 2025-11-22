@@ -91,19 +91,28 @@ async def create_user(
 async def update_user(
     user_id: str,
     user_data: UserUpdate,
-    current_user: dict = Depends(require_roles(["admin"]))
+    current_user: dict = Depends(get_current_user)
 ):
     """
-    Update user (Admin only)
+    Update user (Admin or self)
     """
-    update_data = {k: v for k, v in user_data.dict(exclude_unset=True).items()}
+    # Only admin can update other users
+    if str(current_user["_id"]) != user_id and current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to update this user")
+    
+    update_data = {k: v for k, v in user_data.dict(exclude_unset=True).items() if v is not None}
     if not update_data:
         raise HTTPException(status_code=400, detail="No fields to update")
     
+    # If password is being updated, hash it
+    if "password" in update_data:
+        update_data["password"] = hash_password(update_data["password"])
+    
     update_data["updated_at"] = datetime.utcnow()
     
+    from bson import ObjectId
     result = await db.users.update_one(
-        {"_id": user_id},
+        {"_id": ObjectId(user_id)},
         {"$set": update_data}
     )
     
