@@ -41,6 +41,7 @@ class OrderInDB(OrderBase):
     order_number: str
     date: datetime
     total: float
+    total_commission: Optional[float] = 0  # Comissão total do pedido
     approved_by: Optional[str] = None
     created_by: str
     created_at: datetime
