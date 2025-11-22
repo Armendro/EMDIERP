@@ -10,6 +10,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     Dependency to get current authenticated user from JWT token
     """
     from database import db
+    from bson import ObjectId
     
     token = credentials.credentials
     payload = decode_token(token)
@@ -22,7 +23,14 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         )
     
     # Get user from database
-    user = await db.users.find_one({"_id": user_id})
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid user ID format"
+        )
+    
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
