@@ -42,5 +42,7 @@ class UserInDB(UserBase):
 class UserResponse(UserBase):
     id: str
     avatar: str
+    store_id: Optional[str] = None
+    is_active: bool = True
     created_at: datetime
     updated_at: datetime
