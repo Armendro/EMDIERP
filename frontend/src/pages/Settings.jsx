@@ -279,7 +279,7 @@ const Settings = () => {
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Função</th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Loja</th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-                          {user?.role === 'admin' && (
+                          {(user?.role === 'admin' || user?.role === 'manager') && (
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
                           )}
                         </tr>
