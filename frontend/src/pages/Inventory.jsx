@@ -74,116 +74,14 @@ const Inventory = () => {
               Adicionar Produto
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Cadastrar Novo Produto</DialogTitle>
+              <DialogTitle>Cadastrar Novo Produto com Variantes</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleCreateProduct} className="space-y-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nome do Produto *</Label>
-                  <Input
-                    placeholder="Ex: Notebook Dell Inspiron"
-                    value={productForm.name}
-                    onChange={(e) => setProductForm({...productForm, name: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Código SKU *</Label>
-                  <Input
-                    placeholder="Ex: PROD-001"
-                    value={productForm.sku}
-                    onChange={(e) => setProductForm({...productForm, sku: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Categoria</Label>
-                  <Input
-                    placeholder="Ex: Eletrônicos"
-                    value={productForm.category}
-                    onChange={(e) => setProductForm({...productForm, category: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Fornecedor</Label>
-                  <Input
-                    placeholder="Ex: Dell Brasil"
-                    value={productForm.supplier}
-                    onChange={(e) => setProductForm({...productForm, supplier: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Descrição</Label>
-                <Textarea
-                  placeholder="Descreva o produto..."
-                  rows={3}
-                  value={productForm.description}
-                  onChange={(e) => setProductForm({...productForm, description: e.target.value})}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Preço de Venda (R$) *</Label>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    placeholder="Ex: 2999.90"
-                    value={productForm.price}
-                    onChange={(e) => setProductForm({...productForm, price: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Custo (R$) *</Label>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    placeholder="Ex: 2000.00"
-                    value={productForm.cost}
-                    onChange={(e) => setProductForm({...productForm, cost: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Estoque Inicial</Label>
-                  <Input
-                    type="number"
-                    placeholder="Ex: 50"
-                    value={productForm.stock}
-                    onChange={(e) => setProductForm({...productForm, stock: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nível de Reposição</Label>
-                  <Input
-                    type="number"
-                    placeholder="Ex: 10"
-                    value={productForm.reorder_level}
-                    onChange={(e) => setProductForm({...productForm, reorder_level: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-4 pt-4">
-                <Button type="submit" className="flex-1">
-                  Cadastrar Produto
-                </Button>
-                <Button type="button" variant="outline" onClick={() => setIsCreateOpen(false)}>
-                  Cancelar
-                </Button>
-              </div>
-            </form>
+            <ProductForm
+              onSubmit={handleCreateProduct}
+              onCancel={() => setIsCreateOpen(false)}
+            />
           </DialogContent>
         </Dialog>
       </div>
