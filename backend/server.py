@@ -39,6 +39,8 @@ api_router.include_router(stock_movements.router)
 api_router.include_router(accounts.router)
 api_router.include_router(dashboard.router)
 api_router.include_router(contacts.router)
+api_router.include_router(stores.router)
+api_router.include_router(cost_centers.router)
 
 # Include the router in the main app
 app.include_router(api_router)
