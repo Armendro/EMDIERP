@@ -477,13 +477,13 @@ const ProfileForm = ({ user, stores, onSave, onCancel }) => {
         <Input value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
       </div>
       <div className="space-y-2">
-        <Label>Loja</Label>
-        <Select value={formData.store_id} onValueChange={(value) => setFormData({...formData, store_id: value})}>
+        <Label>Loja (opcional)</Label>
+        <Select value={formData.store_id || 'none'} onValueChange={(value) => setFormData({...formData, store_id: value === 'none' ? '' : value})}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione uma loja" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Nenhuma</SelectItem>
+            <SelectItem value="none">Nenhuma</SelectItem>
             {stores.map((store) => (
               <SelectItem key={store.id} value={store.id}>{store.code} - {store.name}</SelectItem>
             ))}
@@ -549,13 +549,13 @@ const UserForm = ({ user, stores, onSave, onCancel }) => {
         <Input value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
       </div>
       <div className="space-y-2">
-        <Label>Loja</Label>
-        <Select value={formData.store_id} onValueChange={(value) => setFormData({...formData, store_id: value})}>
+        <Label>Loja (opcional)</Label>
+        <Select value={formData.store_id || 'none'} onValueChange={(value) => setFormData({...formData, store_id: value === 'none' ? '' : value})}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione uma loja" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Nenhuma</SelectItem>
+            <SelectItem value="none">Nenhuma</SelectItem>
             {stores.map((store) => (
               <SelectItem key={store.id} value={store.id}>{store.code} - {store.name}</SelectItem>
             ))}
