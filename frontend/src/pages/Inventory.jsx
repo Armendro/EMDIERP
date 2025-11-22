@@ -42,43 +42,10 @@ const Inventory = () => {
   const lowStockProducts = products.filter(p => p.stock < p.reorder_level);
   const totalInventoryValue = products.reduce((sum, p) => sum + (p.stock * p.cost), 0);
 
-  const handleCreateProduct = async (e) => {
-    e.preventDefault();
-
-    // Validar campos obrigatórios
-    if (!productForm.name || !productForm.sku || !productForm.price || !productForm.cost) {
-      alert('Preencha todos os campos obrigatórios');
-      return;
-    }
-
-    const productData = {
-      name: productForm.name,
-      sku: productForm.sku,
-      category: productForm.category || 'Geral',
-      description: productForm.description,
-      price: parseFloat(productForm.price),
-      cost: parseFloat(productForm.cost),
-      stock: parseInt(productForm.stock) || 0,
-      reorder_level: parseInt(productForm.reorder_level) || 10,
-      supplier: productForm.supplier
-    };
-
+  const handleCreateProduct = async (productData) => {
     const success = await createProduct(productData);
-    
     if (success) {
       setIsCreateOpen(false);
-      // Resetar formulário
-      setProductForm({
-        name: '',
-        sku: '',
-        category: '',
-        description: '',
-        price: '',
-        cost: '',
-        stock: '',
-        reorder_level: '',
-        supplier: ''
-      });
     }
   };
 
