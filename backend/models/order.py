@@ -20,6 +20,7 @@ class OrderItem(BaseModel):
     quantity: int = Field(gt=0)
     price: float = Field(ge=0)  # Preço unitário aplicado
     commission_percent: Optional[float] = None  # Percentual de comissão
+    commission_value: Optional[float] = None  # Valor da comissão calculado (quantity * price * commission_percent / 100)
 
 class OrderBase(BaseModel):
     customer_id: str
