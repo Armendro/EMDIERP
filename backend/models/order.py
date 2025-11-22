@@ -63,5 +63,7 @@ class OrderResponse(OrderBase):
     total_commission: Optional[float] = 0
     approved_by: Optional[str] = None
     created_by: str
+    store_id: Optional[str] = None
+    cost_center_id: Optional[str] = None
     created_at: datetime
     updated_at: datetime
