@@ -14,8 +14,12 @@ class OrderStatus(str, Enum):
 class OrderItem(BaseModel):
     product_id: str
     product_name: str
+    variant_id: Optional[str] = None  # ID da variante escolhida
+    variant_name: Optional[str] = None  # Nome da variante
+    price_tier_name: Optional[str] = None  # Nome da faixa de preço (ex: "normal", "site", "promo")
     quantity: int = Field(gt=0)
-    price: float = Field(ge=0)
+    price: float = Field(ge=0)  # Preço unitário aplicado
+    commission_percent: Optional[float] = None  # Percentual de comissão
 
 class OrderBase(BaseModel):
     customer_id: str
