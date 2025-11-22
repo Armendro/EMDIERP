@@ -59,7 +59,7 @@ async def get_user(user_id: str, current_user: dict = Depends(get_current_user))
     """
     Get user by ID
     """
-    user = await db.users.find_one({"_id": user_id})
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
