@@ -180,7 +180,8 @@ async def approve_order(
     This triggers:
     1. Status change to 'approved'
     2. Stock deduction
-    3. Journal entries creation
+    3. Commission calculation
+    4. Journal entries creation
     """
     order = await db.orders.find_one({"_id": ObjectId(order_id)})
     if not order:
@@ -191,6 +192,14 @@ async def approve_order(
             status_code=400,
             detail="Only orders with 'pending_approval' status can be approved"
         )
+    
+    # Calcular comissão total do pedido
+    total_commission = 0
+    for item in order["items"]:
+        # Se o item tem percentual de comissão definido, usar
+        if item.get("commission_percent") is not None:
+            item_commission = item["quantity"] * item["price"] * (item["commission_percent"] / 100)
+            total_commission += item_commission
     
     # Update stock for each item
     for item in order["items"]:
