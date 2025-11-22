@@ -11,6 +11,8 @@ import Sales from "./pages/Sales";
 import Inventory from "./pages/Inventory";
 import Accounting from "./pages/Accounting";
 import Settings from "./pages/Settings";
+import Customers from "./pages/Customers";
+import Suppliers from "./pages/Suppliers";
 import { Toaster } from "./components/ui/sonner";
 
 function App() {
