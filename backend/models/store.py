@@ -22,6 +22,7 @@ class StoreUpdate(BaseModel):
     postal_code: Optional[str] = None
     city: Optional[str] = None
     country: Optional[str] = None
+    revenue_cost_center_id: Optional[str] = None
     status: Optional[str] = None
 
 class StoreInDB(StoreBase):
