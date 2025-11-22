@@ -250,13 +250,29 @@ const Sales = () => {
                 <h3 className="font-semibold text-lg">Informações do Cliente</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Nome do Cliente *</Label>
-                    <Input
-                      placeholder="Digite o nome do cliente"
-                      value={orderForm.customer_name}
-                      onChange={(e) => setOrderForm({...orderForm, customer_name: e.target.value})}
-                      required
-                    />
+                    <Label>Selecionar Cliente *</Label>
+                    <Select 
+                      value={orderForm.customer_id} 
+                      onValueChange={(value) => {
+                        const customer = customers.find(c => c.id === value);
+                        setOrderForm({
+                          ...orderForm, 
+                          customer_id: value,
+                          customer_name: customer?.name || ''
+                        });
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Escolha um cliente" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {customers.map((customer) => (
+                          <SelectItem key={customer.id} value={customer.id}>
+                            {customer.name} - {customer.nif}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="space-y-2">
                     <Label>Status do Pedido</Label>
