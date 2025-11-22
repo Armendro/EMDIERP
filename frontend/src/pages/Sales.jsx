@@ -23,6 +23,8 @@ const Sales = () => {
   const { invoices } = useInvoices();
   const { products } = useProducts();
   const { contacts: customers } = useContacts(true, null);
+  const { stores } = useStores();
+  const { costCenters } = useCostCenters('revenue');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
