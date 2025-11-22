@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -6,8 +6,10 @@ import { Textarea } from './ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Plus, Trash2, X } from 'lucide-react';
+import { useContacts } from '../hooks/useContacts';
 
 const ProductForm = ({ onSubmit, onCancel }) => {
+  const { contacts: suppliers } = useContacts(null, true);
   const [productData, setProductData] = useState({
     name: '',
     sku: '',
@@ -16,6 +18,7 @@ const ProductForm = ({ onSubmit, onCancel }) => {
     sub_family: '',
     description: '',
     supplier: '',
+    default_supplier_id: '',
     status: 'active',
     variants: []
   });
