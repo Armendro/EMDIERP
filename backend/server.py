@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 
 # Import routes
-from routes import auth, users, leads, products, orders, invoices, stock_movements, accounts, dashboard
+from routes import auth, users, leads, products, orders, invoices, stock_movements, accounts, dashboard, contacts
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
