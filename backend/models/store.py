@@ -9,6 +9,7 @@ class StoreBase(BaseModel):
     postal_code: str
     city: str
     country: str = "Portugal"
+    revenue_cost_center_id: Optional[str] = None
     status: str = "active"  # 'active' | 'inactive'
 
 class StoreCreate(StoreBase):
