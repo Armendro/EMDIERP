@@ -14,6 +14,8 @@ class UserBase(BaseModel):
     role: UserRole
     phone: Optional[str] = None
     department: Optional[str] = None
+    store_id: Optional[str] = None
+    is_active: bool = True
 
 class UserCreate(UserBase):
     password: str
