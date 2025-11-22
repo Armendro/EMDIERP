@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useOrders } from '../hooks/useOrders';
 import { useInvoices } from '../hooks/useInvoices';
 import { useProducts } from '../hooks/useProducts';
+import { useContacts } from '../hooks/useContacts';
 import { useAuth } from '../context/AuthContext';
 import { Plus, Search, CheckCircle, XCircle, Eye, Trash2 } from 'lucide-react';
 import { translate } from '../utils/translations';
