@@ -35,6 +35,8 @@ function App() {
               <Route path="crm" element={<CRM />} />
               <Route path="sales" element={<Sales />} />
               <Route path="inventory" element={<Inventory />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="suppliers" element={<Suppliers />} />
               <Route path="accounting" element={<Accounting />} />
               <Route path="settings/*" element={<Settings />} />
             </Route>
