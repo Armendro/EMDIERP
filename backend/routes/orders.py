@@ -124,13 +124,15 @@ async def create_order(
     """
     Create a new order
     """
-    # Calculate total
+    # Calculate total and total commission
     total = sum(item.quantity * item.price for item in order_data.items)
+    total_commission = sum(item.commission_value for item in order_data.items if item.commission_value is not None)
     
     order_dict = order_data.dict()
     order_dict["order_number"] = await generate_order_number()
     order_dict["date"] = datetime.utcnow()
     order_dict["total"] = total
+    order_dict["total_commission"] = total_commission
     order_dict["created_by"] = str(current_user["_id"])
     order_dict["created_at"] = datetime.utcnow()
     order_dict["updated_at"] = datetime.utcnow()
@@ -140,7 +142,8 @@ async def create_order(
     return {
         "message": "Order created successfully",
         "order_id": str(result.inserted_id),
-        "order_number": order_dict["order_number"]
+        "order_number": order_dict["order_number"],
+        "total_commission": total_commission
     }
 
 @router.put("/{order_id}")
