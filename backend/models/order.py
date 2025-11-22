@@ -27,6 +27,8 @@ class OrderBase(BaseModel):
     customer_name: str
     items: List[OrderItem]
     status: OrderStatus = OrderStatus.draft
+    store_id: Optional[str] = None
+    cost_center_id: Optional[str] = None
 
 class OrderCreate(OrderBase):
     pass
