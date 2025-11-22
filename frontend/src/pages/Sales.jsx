@@ -208,7 +208,7 @@ const Sales = () => {
     
     if (success) {
       setIsCreateOpen(false);
-      setOrderForm({ customer_id: '', customer_name: '', status: 'draft' });
+      setOrderForm({ customer_id: '', customer_name: '', store_id: '', cost_center_id: '', status: 'draft' });
       setOrderItems([]);
     }
   };
