@@ -127,11 +127,15 @@ async def delete_user(
     current_user: dict = Depends(require_roles(["admin"]))
 ):
     """
-    Delete user (Admin only)
+    Deactivate user (Admin only) - soft delete
     """
-    result = await db.users.delete_one({"_id": user_id})
+    from bson import ObjectId
+    result = await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"is_active": False, "updated_at": datetime.utcnow()}}
+    )
     
-    if result.deleted_count == 0:
+    if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="User not found")
     
-    return {"message": "User deleted successfully"}
+    return {"message": "User deactivated successfully"}
