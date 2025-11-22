@@ -15,19 +15,6 @@ const Inventory = () => {
   const [movements, setMovements] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  
-  // Form state para novo produto
-  const [productForm, setProductForm] = useState({
-    name: '',
-    sku: '',
-    category: '',
-    description: '',
-    price: '',
-    cost: '',
-    stock: '',
-    reorder_level: '',
-    supplier: ''
-  });
 
   // Carregar movimentações de estoque
   useEffect(() => {
