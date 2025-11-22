@@ -63,6 +63,7 @@ async def get_product(product_id: str, current_user: dict = Depends(get_current_
         "stock": product.get("stock"),
         "reorder_level": product.get("reorder_level"),
         "supplier": product.get("supplier"),
+        "default_supplier_id": product.get("default_supplier_id"),
         "status": product.get("status", "active"),
         "variants": product.get("variants", []),
         "created_at": product["created_at"],
